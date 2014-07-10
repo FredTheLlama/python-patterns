@@ -92,9 +92,11 @@ class TestManager:
 
     def setReporter(self, reporter):
         self._reporter = reporter
+        reporter.setTm(self)
 
     def setDB(self, db):
         self._db = db
+        db.setTm(self)
 
     def publishReport(self):
         self._db.update()
@@ -102,6 +104,7 @@ class TestManager:
 
     def setTC(self, tc):
         self._tc = tc
+        tc.setTm(self)
 
 
 if __name__ == '__main__':
@@ -110,14 +113,11 @@ if __name__ == '__main__':
     tm = TestManager()
     tm.setReporter(reporter)
     tm.setDB(db)
-    reporter.setTM(tm)
-    db.setTM(tm)
     # For simplification we are looping on the same test.
     # Practically, it could be about various unique test classes and their
     # objects
     for i in range(3):
         tc = TC()
-        tc.setTM(tm)
         tm.setTC(tc)
         tc.setup()
         tc.execute()
